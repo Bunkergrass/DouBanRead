@@ -17,11 +17,15 @@
         android:lineSpacingExtra="16sp"
         android:textColor="#ddffffff"
         android:text="666666666\n藏书总量"/>
-   <com.example.qinyu.doubanread.view.ArcView
-        android:id="@+id/arcview"
-        android:layout_width="match_parent"
-        android:layout_height="match_parent" />
+   <!--<com.example.qinyu.doubanread.view.ArcView-->
+        <!--android:id="@+id/arcview"-->
+        <!--android:layout_width="match_parent"-->
+        <!--android:layout_height="match_parent" />-->
 
+    <com.example.qinyu.doubanread.view.BarView
+        android:id="@+id/barView"
+        android:layout_width="match_parent"
+        android:layout_height="wrap_content" />
 
 
 </LinearLayout>

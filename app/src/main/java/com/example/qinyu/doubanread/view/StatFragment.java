@@ -30,17 +30,27 @@ public class StatFragment extends Fragment {
                              Bundle savedInstanceState) {
         View view=inflater.inflate(R.layout.fragment_stat, container, false);
 
-        ArcView arcView=view.findViewById(R.id.arcview);
         //search on sql
         List<Times> times = statTag();
-//        for (int i = 6; i > 0; i--) {
-//            Times t = new Times();
-//            t.hour = i;
-//            t.text = "Number"+i;
-//            times.add(t);
-//        }
 
-        ArcView.ArcViewAdapter myAdapter = arcView.new ArcViewAdapter<Times>(){
+
+//        ArcView arcView=view.findViewById(R.id.arcview);
+//        ArcView.ArcViewAdapter myAdapter = arcView.new ArcViewAdapter<Times>(){
+//            @Override
+//            public double getValue(Times times) {
+//                return times.hour;
+//            }
+//
+//            @Override
+//            public String getText(Times times) {
+//                return times.text;
+//            }
+//        };
+//        myAdapter.setData(times);//绑定数据
+//        arcView.setMaxNum(4);
+
+        BarView barView=view.findViewById(R.id.barView);
+        BarView.BarViewAdapter myAdapter = barView.new BarViewAdapter<Times>() {
             @Override
             public double getValue(Times times) {
                 return times.hour;
@@ -51,8 +61,7 @@ public class StatFragment extends Fragment {
                 return times.text;
             }
         };
-        myAdapter.setData(times);//绑定数据
-        arcView.setMaxNum(4);
+        myAdapter.setData(times);
 
         // Inflate the layout for this fragment
         return view;
@@ -65,7 +74,7 @@ public class StatFragment extends Fragment {
     private List<Times> statTag(){
         List<Times> list=new ArrayList<>();
         SQLiteDatabase database=BookDBHelper.getInstace(getActivity()).getReadableDatabase();
-        Cursor cursor=database.rawQuery("select distinct tag,count(*) as count from book group by tag",null);
+        Cursor cursor=database.rawQuery("select distinct tag,count(*) as count from book group by tag order by count desc",null);
         while (cursor.moveToNext()){
             Times t=new Times();
             t.hour=cursor.getDouble(cursor.getColumnIndex("count"));
