@@ -1,0 +1,27 @@
+<LinearLayout xmlns:android="http://schemas.android.com/apk/res/android"
+    xmlns:tools="http://schemas.android.com/tools"
+    android:layout_width="match_parent"
+    android:layout_height="match_parent"
+    android:orientation="vertical"
+    tools:context="com.example.qinyu.doubanread.view.StatFragment">
+
+    <!-- TODO: Update blank fragment layout -->
+    <TextView
+        android:id="@+id/tv_count"
+        android:layout_width="match_parent"
+        android:layout_height="wrap_content"
+        android:background="#30c090"
+        android:gravity="center"
+        android:padding="16dp"
+        android:textSize="40sp"
+        android:lineSpacingExtra="16sp"
+        android:textColor="#ddffffff"
+        android:text="666666666\n藏书总量"/>
+   <com.example.qinyu.doubanread.view.ArcView
+        android:id="@+id/arcview"
+        android:layout_width="match_parent"
+        android:layout_height="match_parent" />
+
+
+
+</LinearLayout>
