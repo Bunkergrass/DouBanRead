@@ -34,6 +34,9 @@ public class BookAdapter extends RecyclerView.Adapter<BookAdapter.ViewHolder> {
     private List<BookIntro> list;
     Context context;
 
+    private static final int FOOTER=1;
+    private static final int NORMAL=0;
+
     public BookAdapter(Context context,List<BookIntro> list) {
         this.context=context;
         this.list = list;
@@ -45,7 +48,7 @@ public class BookAdapter extends RecyclerView.Adapter<BookAdapter.ViewHolder> {
 
     public OnItemClickListener listener;
     public void setOnItemClickListener(OnItemClickListener listener){
-        this.listener=listener;
+        this.listener = listener;
     }
 
     public void addList(List<BookIntro> newlist){
@@ -81,14 +84,14 @@ public class BookAdapter extends RecyclerView.Adapter<BookAdapter.ViewHolder> {
     @Override
     public int getItemViewType(int position) {
         if(position == getItemCount()-1)
-            return 1;
+            return FOOTER;
         else
-            return 0;
+            return NORMAL;
     }
 
     @Override
     public ViewHolder onCreateViewHolder(ViewGroup parent, int viewType) {
-        if(viewType == 1){
+        if(viewType == FOOTER){
             View view= LayoutInflater.from(parent.getContext()).inflate(layout.book_list_footer,parent,false);
             return new ViewHolder(view);
         }

@@ -1,6 +1,7 @@
 package com.example.qinyu.doubanread.view;
 
 
+import android.arch.persistence.room.ColumnInfo;
 import android.database.Cursor;
 import android.database.sqlite.SQLiteDatabase;
 import android.os.Bundle;
@@ -11,6 +12,7 @@ import android.view.View;
 import android.view.ViewGroup;
 
 import com.example.qinyu.doubanread.R;
+import com.example.qinyu.doubanread.presenter.AppDataBase;
 import com.example.qinyu.doubanread.presenter.BookDBHelper;
 
 import java.util.ArrayList;
@@ -31,8 +33,7 @@ public class StatFragment extends Fragment {
         View view=inflater.inflate(R.layout.fragment_stat, container, false);
 
         //search on sql
-        List<Times> times = statTag();
-
+        List<Times> times = AppDataBase.getInstance(getActivity()).bookDetailDao().stat();
 
 //        ArcView arcView=view.findViewById(R.id.arcview);
 //        ArcView.ArcViewAdapter myAdapter = arcView.new ArcViewAdapter<Times>(){
@@ -67,22 +68,25 @@ public class StatFragment extends Fragment {
         return view;
     }
 
-    class Times{
-        double hour;
-        String text;
+    public static class Times{
+        @ColumnInfo(name = "count")
+        public double hour;
+
+        @ColumnInfo(name = "tag")
+        public String text;
     }
-    private List<Times> statTag(){
-        List<Times> list=new ArrayList<>();
-        SQLiteDatabase database=BookDBHelper.getInstace(getActivity()).getReadableDatabase();
-        Cursor cursor=database.rawQuery("select distinct tag,count(*) as count from book group by tag order by count desc",null);
-        while (cursor.moveToNext()){
-            Times t=new Times();
-            t.hour=cursor.getDouble(cursor.getColumnIndex("count"));
-            t.text=cursor.getString(cursor.getColumnIndex("tag"));
-            list.add(t);
-            Log.d("time",t.text+" "+t.hour);
-        }
-        return list;
-    }
+//    private List<Times> statTag(){
+//        List<Times> list=new ArrayList<>();
+//        SQLiteDatabase database=BookDBHelper.getInstace(getActivity()).getReadableDatabase();
+//        Cursor cursor=database.rawQuery("select distinct tag,count(*) as count from book group by tag order by count desc",null);
+//        while (cursor.moveToNext()){
+//            Times t=new Times();
+//            t.hour=cursor.getDouble(cursor.getColumnIndex("count"));
+//            t.text=cursor.getString(cursor.getColumnIndex("tag"));
+//            list.add(t);
+//            Log.d("time",t.text+" "+t.hour);
+//        }
+//        return list;
+//    }
 
 }

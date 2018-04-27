@@ -16,7 +16,8 @@ import android.widget.Button;
 
 import com.example.qinyu.doubanread.R;
 import com.example.qinyu.doubanread.model.BookDetail;
-import com.example.qinyu.doubanread.presenter.BookDBHelper;
+import com.example.qinyu.doubanread.model.BookDetailDao;
+import com.example.qinyu.doubanread.presenter.AppDataBase;
 
 import java.util.List;
 
@@ -24,6 +25,7 @@ import java.util.List;
  * A simple {@link Fragment} subclass.
  */
 public class CollectFragment extends Fragment {
+    BookDetailDao dao;
     List<BookDetail> list;
     AlertDialog alertDialog;
     RecyclerView recyclerView;
@@ -40,7 +42,8 @@ public class CollectFragment extends Fragment {
                              Bundle savedInstanceState) {
         View view=inflater.inflate(R.layout.fragment_collect, container, false);
 
-        //list=BookDBHelper.getInstace(getActivity()).getall();
+        //use Room
+        dao=AppDataBase.getInstance(getActivity()).bookDetailDao();
 
         initalertdialog();
 
@@ -53,7 +56,7 @@ public class CollectFragment extends Fragment {
     }
 
     private void initView(){
-        list=BookDBHelper.getInstace(getActivity()).getall();
+        list=dao.getall();
         CollectAdapter adapter=new CollectAdapter(getActivity(),list);
         adapter.setOnItemClickListener(new CollectAdapter.OnItemClickListener() {
             @Override
@@ -72,7 +75,6 @@ public class CollectFragment extends Fragment {
         final LinearLayoutManager linearManager=new LinearLayoutManager(getActivity());
         recyclerView.setLayoutManager(gridManager);
         recyclerView.setAdapter(adapter);
-
 
         change.setOnClickListener(new View.OnClickListener() {
             @Override
@@ -97,7 +99,7 @@ public class CollectFragment extends Fragment {
         builder.setPositiveButton("是的", new DialogInterface.OnClickListener() {
             @Override
             public void onClick(DialogInterface dialogInterface, int i) {
-                BookDBHelper.getInstace(getActivity()).delete(list.get(p).getIsbn());
+                dao.delete(list.get(p));
                 initView();
             }
         });

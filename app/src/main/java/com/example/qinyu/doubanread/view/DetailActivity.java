@@ -1,10 +1,9 @@
 package com.example.qinyu.doubanread.view;
 
-import android.support.v7.app.AppCompatActivity;
 import android.os.Bundle;
+import android.support.v7.app.AppCompatActivity;
 import android.util.Log;
 import android.view.View;
-import android.widget.Button;
 import android.widget.ImageButton;
 import android.widget.RatingBar;
 import android.widget.TextView;
@@ -12,14 +11,17 @@ import android.widget.Toast;
 
 import com.example.qinyu.doubanread.R;
 import com.example.qinyu.doubanread.model.BookDetail;
+import com.example.qinyu.doubanread.model.BookDetailDao;
 import com.example.qinyu.doubanread.model.BookIntro;
-import com.example.qinyu.doubanread.presenter.BookDBHelper;
+import com.example.qinyu.doubanread.presenter.AppDataBase;
 import com.example.qinyu.doubanread.presenter.DoubanPresenter;
 
 import java.util.List;
 
 public class DetailActivity extends AppCompatActivity implements IBookView{
     DoubanPresenter doubanPresenter;
+
+    BookDetailDao dao;
 
     String isbn;
     ImageButton collect;
@@ -40,6 +42,8 @@ public class DetailActivity extends AppCompatActivity implements IBookView{
         isbn=getIntent().getStringExtra("isbn");
         BookDetail bookDetail=(BookDetail) getIntent().getSerializableExtra("bookDetail");
 
+        dao=AppDataBase.getInstance(this).bookDetailDao();
+
         initView();
 
         if(isbn!=null){ //where be started from
@@ -51,7 +55,7 @@ public class DetailActivity extends AppCompatActivity implements IBookView{
             Log.d("detail",bookDetail.getSummary());
         }
 
-        if(BookDBHelper.getInstace(DetailActivity.this).exist(isbn)) { //if exits in sql
+        if(dao.exist(isbn) != null  ) { //if exits in sql
             collect.setBackgroundResource(R.drawable.ic_collected);
         }else{
             collect.setBackgroundResource(R.drawable.ic_collect);
@@ -83,11 +87,11 @@ public class DetailActivity extends AppCompatActivity implements IBookView{
         collect.setOnClickListener(new View.OnClickListener() {
             @Override
             public void onClick(View view) {
-                if(BookDBHelper.getInstace(DetailActivity.this).exist(isbn)) {
-                    BookDBHelper.getInstace(DetailActivity.this).delete(bookDetail.getIsbn());
+                if(dao.exist(isbn) != null){
+                    dao.delete(bookDetail);
                     collect.setBackgroundResource(R.drawable.ic_collect);
                 }else{
-                    BookDBHelper.getInstace(DetailActivity.this).insert(bookDetail);
+                    dao.insert(bookDetail);
                     collect.setBackgroundResource(R.drawable.ic_collected);
                 }
             }

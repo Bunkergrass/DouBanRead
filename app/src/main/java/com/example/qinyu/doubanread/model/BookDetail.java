@@ -1,11 +1,16 @@
 package com.example.qinyu.doubanread.model;
 
+import android.arch.persistence.room.Entity;
+import android.arch.persistence.room.PrimaryKey;
+import android.support.annotation.NonNull;
+
 import java.io.Serializable;
 
 /**
  * Created by Qinyu on 2018/4/16.
  */
 
+@Entity(tableName = "book")
 public class BookDetail implements Serializable{
     private String imgurl;
     private String title;
@@ -13,7 +18,11 @@ public class BookDetail implements Serializable{
     private String grade;
     private String numrate;
     private String tag;
+
+    @PrimaryKey(autoGenerate = false)
+    @NonNull
     private String isbn;
+
     private String auther;
     private String pages;
     private String pulisher;
